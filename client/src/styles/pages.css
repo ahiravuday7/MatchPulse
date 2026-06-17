@@ -1,0 +1,59 @@
+/* pages.css     → page header, page content */
+.page h1 {
+  margin-top: 0;
+  font-size: 36px;
+}
+
+.page p {
+  color: #94a3b8;
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.page-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.card {
+  padding: 20px;
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  background: #111827;
+}
+
+.card h2 {
+  margin-top: 0;
+  color: #f8fafc;
+}
+
+@media (max-width: 900px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 800px) {
+  .page-header {
+    flex-direction: column;
+  }
+
+  .page-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
