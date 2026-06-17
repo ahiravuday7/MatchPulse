@@ -10,6 +10,8 @@ import {
   searchPlayers,
   getPlayerDetails,
   getTeamPlayers,
+  getAvailableSeasons,
+  getLeagueSeasons,
 } from "../services/footballService.js";
 
 import { asyncHandler } from "../middleware/asyncHandler.js";
@@ -162,11 +164,12 @@ export const getTeamSquadController = asyncHandler(async (req, res) => {
 
 // player
 export const searchPlayersController = asyncHandler(async (req, res) => {
-  const { q, season = 2024, limit = 10 } = req.query;
+  const { q, season = 2024, league, limit = 10 } = req.query;
 
   const result = await searchPlayers({
     query: q,
     season: Number(season),
+    leagueId: league ? Number(league) : null,
     limit: Number(limit),
   });
 
@@ -175,6 +178,7 @@ export const searchPlayersController = asyncHandler(async (req, res) => {
     source: result.source,
     query: result.query,
     season: result.season,
+    leagueId: result.leagueId,
     count: result.count,
     data: result.data,
   });
@@ -222,6 +226,29 @@ export const getTeamPlayersController = asyncHandler(async (req, res) => {
     success: true,
     source: result.source,
     season: result.season,
+    data: result.data,
+  });
+});
+
+export const getAvailableSeasonsController = asyncHandler(async (req, res) => {
+  const result = await getAvailableSeasons();
+
+  res.status(200).json({
+    success: true,
+    source: result.source,
+    count: result.count,
+    data: result.data,
+  });
+});
+
+export const getLeagueSeasonsController = asyncHandler(async (req, res) => {
+  const { leagueId } = req.params;
+
+  const result = await getLeagueSeasons(leagueId);
+
+  res.status(200).json({
+    success: true,
+    source: result.source,
     data: result.data,
   });
 });

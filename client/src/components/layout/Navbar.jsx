@@ -19,7 +19,7 @@ const navItems = [
   },
   {
     label: "Search",
-    path: "/search/players",
+    path: "/search",
   },
   {
     label: "Favorites",

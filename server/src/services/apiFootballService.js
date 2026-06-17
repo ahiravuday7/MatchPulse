@@ -214,14 +214,22 @@ export const getTeamSquadFromApi = async (teamId) => {
   });
 };
 
-// playerss
-export const searchPlayersFromApi = async ({ query, season }) => {
+// players
+export const searchPlayersFromApi = async ({ query, season, leagueId }) => {
+  const params = {
+    search: query,
+    season,
+  };
+
+  if (leagueId) {
+    params.league = leagueId;
+  }
+
+  console.log("[PLAYER SEARCH API CALL]", params);
+
   return requestApiFootball({
     url: "/players",
-    params: {
-      search: query,
-      season,
-    },
+    params,
     usageKey: "player_search",
   });
 };
@@ -245,6 +253,24 @@ export const getTeamPlayersFromApi = async ({ teamId, season }) => {
       season,
     },
     usageKey: "team_players",
+  });
+};
+
+export const getAvailableSeasonsFromApi = async () => {
+  return requestApiFootball({
+    url: "/leagues/seasons",
+    params: {},
+    usageKey: "seasons",
+  });
+};
+
+export const getLeagueSeasonsFromApi = async (leagueId) => {
+  return requestApiFootball({
+    url: "/leagues",
+    params: {
+      id: leagueId,
+    },
+    usageKey: "league_seasons",
   });
 };
 // This file is responsible for calling the external API-Football server.

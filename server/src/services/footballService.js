@@ -12,6 +12,8 @@ import {
   searchPlayersFromApi,
   getPlayerDetailsFromApi,
   getTeamPlayersFromApi,
+  getAvailableSeasonsFromApi,
+  getLeagueSeasonsFromApi,
 } from "./apiFootballService.js"; //This imports the function that calls API-Football.
 //These are used to define:which cache key to use, how long data should stay cached
 import { cacheKeys } from "../utils/cacheKeys.js";
@@ -34,6 +36,10 @@ import {
   formatPlayerDetails,
   formatTeamPlayers,
 } from "../utils/playerFormatter.js";
+import {
+  formatSeasonOptions,
+  formatLeagueSeasons,
+} from "../utils/seasonFormatter.js";
 
 //This function is called by the controller.
 export const getLiveMatches = async () => {
@@ -235,17 +241,23 @@ export const getTeamSquad = async (teamId) => {
 };
 
 // players
-export const searchPlayers = async ({ query, season, limit = 10 }) => {
+export const searchPlayers = async ({
+  query,
+  season,
+  leagueId,
+  limit = 10,
+}) => {
   const searchTerm = query.trim();
 
   const result = await getOrSetCache({
-    key: cacheKeys.searchPlayers(searchTerm, season),
+    key: cacheKeys.searchPlayers(searchTerm, season, leagueId || "all"),
     type: "PLAYER_SEARCH",
     ttlSeconds: CACHE_DURATIONS.PLAYER_SEARCH,
     fetchFreshData: () =>
       searchPlayersFromApi({
         query: searchTerm,
         season,
+        leagueId,
       }),
   });
 
@@ -255,6 +267,7 @@ export const searchPlayers = async ({ query, season, limit = 10 }) => {
     source: result.source,
     query: searchTerm,
     season,
+    leagueId: leagueId || null,
     count: players.length,
     data: players,
   };
@@ -298,6 +311,43 @@ export const getTeamPlayers = async ({ teamId, season, limit = 50 }) => {
   };
 };
 
+export const getAvailableSeasons = async () => {
+  const result = await getOrSetCache({
+    key: cacheKeys.seasons(),
+    type: "SEASONS",
+    ttlSeconds: CACHE_DURATIONS.SEASONS,
+    fetchFreshData: getAvailableSeasonsFromApi,
+  });
+
+  const seasons = formatSeasonOptions({
+    seasons: result.data?.response || [],
+  });
+
+  return {
+    source: result.source,
+    count: seasons.length,
+    data: seasons,
+  };
+};
+
+export const getLeagueSeasons = async (leagueId) => {
+  const result = await getOrSetCache({
+    key: cacheKeys.leagueSeasons(leagueId),
+    type: "LEAGUE_SEASONS",
+    ttlSeconds: CACHE_DURATIONS.LEAGUE_SEASONS,
+    fetchFreshData: () => getLeagueSeasonsFromApi(leagueId),
+  });
+
+  const formattedData = formatLeagueSeasons({
+    leagueResponse: result.data,
+    leagueId,
+  });
+
+  return {
+    source: result.source,
+    data: formattedData,
+  };
+};
 // This file contains business logic.
 //Check MongoDB cache using key football:matches:live
 

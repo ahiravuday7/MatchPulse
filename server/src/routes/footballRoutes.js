@@ -11,6 +11,8 @@ import {
   searchPlayersController,
   getPlayerDetailsController,
   getTeamPlayersController,
+  getAvailableSeasonsController,
+  getLeagueSeasonsController,
 } from "../controllers/footballController.js";
 import { validateRequest } from "../middleware/validateRequest.js";
 
@@ -23,11 +25,14 @@ import {
   playerSearchValidator,
   playerDetailsValidator,
   teamPlayersValidator,
+  leagueSeasonsValidator,
 } from "../validators/footballValidators.js";
 
 import { searchLimiter } from "../middleware/rateLimiter.js";
 
 const router = express.Router();
+
+router.get("/seasons", getAvailableSeasonsController);
 
 router.get(
   "/search",
@@ -58,6 +63,13 @@ router.get(
   matchIdValidator,
   validateRequest,
   getMatchDetailsController,
+);
+
+router.get(
+  "/leagues/:leagueId/seasons",
+  leagueSeasonsValidator,
+  validateRequest,
+  getLeagueSeasonsController,
 );
 
 router.get(

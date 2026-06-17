@@ -95,9 +95,19 @@ export const footballService = {
     return response.data;
   },
 
-  searchPlayers: async ({ query, season = 2024, limit = 10 }) => {
+  searchPlayers: async ({
+    query,
+    season = 2024,
+    leagueId = 39,
+    limit = 10,
+  }) => {
     const response = await apiClient.get(
-      API_ROUTES.football.playerSearch(query, season, limit),
+      API_ROUTES.football.playerSearch({
+        query,
+        season,
+        leagueId,
+        limit,
+      }),
     );
 
     return response.data;
@@ -113,6 +123,20 @@ export const footballService = {
       season: response.data.season,
       data: response.data.data,
     };
+  },
+
+  getAvailableSeasons: async () => {
+    const response = await apiClient.get(API_ROUTES.football.seasons);
+
+    return response.data;
+  },
+
+  getLeagueSeasons: async (leagueId) => {
+    const response = await apiClient.get(
+      API_ROUTES.football.leagueSeasons(leagueId),
+    );
+
+    return response.data;
   },
 };
 

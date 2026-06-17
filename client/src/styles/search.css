@@ -1,0 +1,167 @@
+.search-panel {
+  padding: 20px;
+  border: 1px solid #1e293b;
+  border-radius: 18px;
+  background: #020617;
+  margin-bottom: 24px;
+}
+
+.search-input-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  background: #111827;
+  color: #f8fafc;
+  font-size: 15px;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: #22c55e;
+}
+
+.search-input::placeholder {
+  color: #64748b;
+}
+
+.season-select {
+  min-width: 120px;
+  padding: 0 12px;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  background: #111827;
+  color: #f8fafc;
+  outline: none;
+}
+
+.season-select:focus {
+  border-color: #22c55e;
+}
+
+.search-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.search-tab {
+  padding: 9px 14px;
+  border: 1px solid #334155;
+  border-radius: 999px;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.search-tab:hover {
+  border-color: #22c55e;
+  color: #22c55e;
+}
+
+.search-tab.active {
+  background: #22c55e;
+  border-color: #22c55e;
+  color: #020617;
+}
+
+.search-hint {
+  margin: 16px 0 0;
+  color: #94a3b8;
+}
+
+.search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.search-result-section h2 {
+  margin-bottom: 14px;
+}
+
+.search-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.search-card {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  background: #111827;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.search-card:hover {
+  transform: translateY(-2px);
+  border-color: #22c55e;
+}
+
+.search-card-media {
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  background: #020617;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.search-card-logo {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+}
+
+.search-card-photo {
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  object-fit: cover;
+}
+
+.search-card-content {
+  min-width: 0;
+}
+
+.search-card-content h3 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 17px;
+}
+
+.search-card-content p {
+  margin: 6px 0;
+  color: #94a3b8;
+}
+
+.search-card-content span {
+  color: #64748b;
+  font-size: 13px;
+}
+
+@media (max-width: 800px) {
+  .search-input-row {
+    flex-direction: column;
+  }
+
+  .season-select {
+    min-height: 44px;
+  }
+
+  .search-card-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -11,13 +11,13 @@ import { LeagueStandingsPage } from "../pages/LeagueStandingsPage";
 import { TeamDetailsPage } from "../pages/TeamDetailsPage";
 import { TeamSquadPage } from "../pages/TeamSquadPage";
 import { TeamPlayersPage } from "../pages/TeamPlayersPage";
-import { PlayerSearchPage } from "../pages/PlayerSearchPage";
 import { PlayerDetailsPage } from "../pages/PlayerDetailsPage";
 import { FavoritesPage } from "../pages/FavoritesPage";
 import { LoginPage } from "../pages/LoginPage";
 import { RegisterPage } from "../pages/RegisterPage";
 import { ProfilePage } from "../pages/ProfilePage";
 import { NotFoundPage } from "../pages/NotFoundPage";
+import { SearchPage } from "../pages/SearchPage";
 
 export const AppRoutes = () => {
   return (
@@ -40,7 +40,8 @@ export const AppRoutes = () => {
         <Route path="/teams/:teamId/squad" element={<TeamSquadPage />} />
         <Route path="/teams/:teamId/players" element={<TeamPlayersPage />} />
 
-        <Route path="/search/players" element={<PlayerSearchPage />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/search/players" element={<SearchPage />} />
         <Route path="/players/:playerId" element={<PlayerDetailsPage />} />
 
         <Route path="/favorites" element={<FavoritesPage />} />

@@ -19,4 +19,7 @@ export const CACHE_DURATIONS = {
   PLAYER_SEARCH: 24 * 60 * 60,
   PLAYER_DETAILS: 24 * 60 * 60,
   TEAM_PLAYERS: 24 * 60 * 60,
+
+  SEASONS: 7 * 24 * 60 * 60,
+  LEAGUE_SEASONS: 7 * 24 * 60 * 60,
 };

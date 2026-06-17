@@ -65,6 +65,8 @@ export const playerSearchValidator = [
     .isInt({ min: 2000, max: 2100 })
     .withMessage("Invalid season"),
 
+  query("league").optional().isInt({ min: 1 }).withMessage("Invalid league ID"),
+
   query("limit")
     .optional()
     .isInt({ min: 1, max: 20 })
@@ -94,4 +96,8 @@ export const teamPlayersValidator = [
     .isInt({ min: 1, max: 100 })
     .withMessage("Limit must be between 1 and 100")
     .toInt(),
+];
+
+export const leagueSeasonsValidator = [
+  param("leagueId").isInt({ min: 1 }).withMessage("Invalid league ID"),
 ];

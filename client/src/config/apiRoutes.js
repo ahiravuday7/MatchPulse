@@ -1,3 +1,5 @@
+const encodeQuery = (query) => encodeURIComponent(query.trim());
+
 export const API_ROUTES = {
   health: "/health",
 
@@ -11,6 +13,10 @@ export const API_ROUTES = {
   },
 
   football: {
+    seasons: "/football/seasons",
+
+    leagueSeasons: (leagueId) => `/football/leagues/${leagueId}/seasons`,
+
     liveMatches: "/football/matches/live",
     todayFixtures: "/football/fixtures/today",
     finishedMatches: "/football/matches/finished",
@@ -31,8 +37,10 @@ export const API_ROUTES = {
     search: (query, type = "all", limit = 10) =>
       `/football/search?q=${query}&type=${type}&limit=${limit}`,
 
-    playerSearch: (query, season, limit = 10) =>
-      `/football/players/search?q=${query}&season=${season}&limit=${limit}`,
+    playerSearch: ({ query, season, leagueId = 39, limit = 10 }) =>
+      `/football/players/search?q=${encodeQuery(
+        query,
+      )}&season=${season}&league=${leagueId}&limit=${limit}`,
 
     playerDetails: (playerId, season) =>
       `/football/players/${playerId}?season=${season}`,

@@ -21,12 +21,16 @@ export const cacheKeys = {
 
   teamSquad: (teamId) => `team-squad-${teamId}`,
 
-  searchPlayers: (query, season) =>
-    `search-players-${normalizeSearchQuery(query)}-${season}`,
+  searchPlayers: (query, season, leagueId = "all") =>
+    `search-players-${normalizeSearchQuery(query)}-${season}-${leagueId}`,
 
   playerDetails: (playerId, season) => `player-details-${playerId}-${season}`,
 
   teamPlayers: (teamId, season) => `team-players-${teamId}-${season}`,
+
+  seasons: () => "football-seasons",
+
+  leagueSeasons: (leagueId) => `league-seasons-${leagueId}`,
 };
 // Create consistent cache keys
 // This creates a unique cache key for each date.
