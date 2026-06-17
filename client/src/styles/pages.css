@@ -57,3 +57,9 @@
     justify-content: space-between;
   }
 }
+
+.page-date {
+  margin-left: 8px;
+  color: #22c55e;
+  font-weight: 600;
+}

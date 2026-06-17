@@ -1,8 +1,81 @@
+import { useEffect, useState } from "react";
+
+import { footballService } from "../services/footballService";
+
+import { LoadingState } from "../components/common/LoadingState";
+import { ErrorState } from "../components/common/ErrorState";
+import { SourceBadge } from "../components/common/SourceBadge";
+import { LeagueFixturesList } from "../components/football/LeagueFixturesList";
+
 export const TodayFixturesPage = () => {
+  const [leagueGroups, setLeagueGroups] = useState([]);
+  const [source, setSource] = useState(null);
+  const [date, setDate] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const fetchTodayFixtures = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const result = await footballService.getTodayFixtures();
+
+      setLeagueGroups(result.leagues);
+      setSource(result.source);
+      setDate(result.date);
+    } catch (error) {
+      setError(
+        error.response?.data?.message ||
+          error.message ||
+          "Failed to load today fixtures",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTodayFixtures();
+  }, []);
+
+  if (loading) {
+    return <LoadingState message="Loading today fixtures..." />;
+  }
+
+  if (error) {
+    return <ErrorState message={error} onRetry={fetchTodayFixtures} />;
+  }
+
   return (
     <section className="page">
-      <h1>Today Fixtures</h1>
-      <p>Today’s fixtures will be displayed here.</p>
+      <div className="page-header">
+        <div>
+          <h1>Today Fixtures</h1>
+          <p>
+            Football fixtures scheduled for today.
+            {date && <span className="page-date"> Date: {date}</span>}
+          </p>
+        </div>
+
+        <div className="page-actions">
+          <SourceBadge source={source} />
+
+          <button
+            type="button"
+            className="button secondary-button"
+            onClick={fetchTodayFixtures}
+          >
+            Refresh
+          </button>
+        </div>
+      </div>
+
+      <LeagueFixturesList
+        leagueGroups={leagueGroups}
+        emptyTitle="No fixtures today"
+        emptyMessage="There are no football fixtures available for today."
+      />
     </section>
   );
 };
