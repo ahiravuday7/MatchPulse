@@ -8,6 +8,9 @@ import { ErrorState } from "../components/common/ErrorState";
 import { EmptyState } from "../components/common/EmptyState";
 import { SourceBadge } from "../components/common/SourceBadge";
 
+import { FavoriteButton } from "../components/common/FavoriteButton";
+import { createPlayerFavorite } from "../utils/favoritePayloads";
+
 const DEFAULT_SEASON_OPTIONS = [
   { value: 2025, label: "2025/2026" },
   { value: 2024, label: "2024/2025" },
@@ -70,6 +73,18 @@ export const PlayerDetailsPage = () => {
   const [loading, setLoading] = useState(false);
   const [seasonLoading, setSeasonLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const player = playerDetails?.player;
+  const summary = playerDetails?.summary;
+  const statistics = playerDetails?.statistics || [];
+
+  const playerFavorite =
+    player && summary
+      ? createPlayerFavorite({
+          player,
+          summary,
+        })
+      : null;
 
   const selectedLeagueName = useMemo(() => {
     return (
@@ -153,10 +168,6 @@ export const PlayerDetailsPage = () => {
     setLeagueId(event.target.value);
   };
 
-  const player = playerDetails?.player;
-  const summary = playerDetails?.summary;
-  const statistics = playerDetails?.statistics || [];
-
   return (
     <section className="page">
       <div className="page-header">
@@ -237,6 +248,7 @@ export const PlayerDetailsPage = () => {
                   {player?.nationality || "Unknown nationality"} •{" "}
                   {selectedLeagueName}
                 </span>
+                {playerFavorite && <FavoriteButton favorite={playerFavorite} />}
               </div>
             </div>
 

@@ -72,4 +72,10 @@
   .auth-links {
     flex-wrap: wrap;
   }
+
+  .logout-button {
+  border: none;
+  cursor: pointer;
+  font: inherit;
+}
 }

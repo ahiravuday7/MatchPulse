@@ -1,4 +1,7 @@
-import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+
+import { authService } from "../../services/authService";
 
 const navItems = [
   {
@@ -28,6 +31,32 @@ const navItems = [
 ];
 
 export const Navbar = () => {
+  const navigate = useNavigate();
+
+  const [isLoggedIn, setIsLoggedIn] = useState(authService.isLoggedIn());
+
+  useEffect(() => {
+    const handleAuthChange = () => {
+      setIsLoggedIn(authService.isLoggedIn());
+    };
+
+    window.addEventListener("auth-change", handleAuthChange);
+    window.addEventListener("storage", handleAuthChange);
+
+    return () => {
+      window.removeEventListener("auth-change", handleAuthChange);
+      window.removeEventListener("storage", handleAuthChange);
+    };
+  }, []);
+
+  const handleLogout = async () => {
+    await authService.logout();
+
+    window.dispatchEvent(new Event("auth-change"));
+
+    navigate("/login");
+  };
+
   return (
     <header className="navbar">
       <NavLink to="/" className="brand">
@@ -49,13 +78,25 @@ export const Navbar = () => {
       </nav>
 
       <div className="auth-links">
-        <NavLink to="/login" className="nav-link">
-          Login
-        </NavLink>
+        {isLoggedIn ? (
+          <button
+            type="button"
+            className="nav-link primary-link logout-button"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        ) : (
+          <>
+            <NavLink to="/login" className="nav-link">
+              Login
+            </NavLink>
 
-        <NavLink to="/register" className="nav-link primary-link">
-          Register
-        </NavLink>
+            <NavLink to="/register" className="nav-link primary-link">
+              Register
+            </NavLink>
+          </>
+        )}
       </div>
     </header>
   );

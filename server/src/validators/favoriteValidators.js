@@ -2,8 +2,8 @@ import { body, param } from "express-validator";
 
 export const addFavoriteValidator = [
   body("type")
-    .isIn(["team", "league"])
-    .withMessage("Favorite type must be team or league"),
+    .isIn(["team", "league", "player"])
+    .withMessage("Favorite type must be team, league, or player"),
 
   body("externalId")
     .isInt({ min: 1 })
