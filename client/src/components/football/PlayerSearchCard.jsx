@@ -1,14 +1,11 @@
 import { Link } from "react-router-dom";
 
-export const PlayerSearchCard = ({ item, season, leagueId }) => {
+export const PlayerSearchCard = ({ item }) => {
   const player = item.player;
   const context = item.currentContext;
 
   return (
-    <Link
-      to={`/players/${player.id}?season=${season}&league=${leagueId}`}
-      className="search-card"
-    >
+    <Link to={`/players/${player.id}`} className="search-card">
       <div className="search-card-media">
         {player.photo && (
           <img
@@ -20,26 +17,18 @@ export const PlayerSearchCard = ({ item, season, leagueId }) => {
       </div>
 
       <div className="search-card-content">
-        <h3>
-          {player.firstname && player.lastname
-            ? `${player.firstname} ${player.lastname}`
-            : player.name}
-        </h3>
+        <h3>{player.name}</h3>
 
         <p>
           {context?.team?.name || "Unknown team"}
           {context?.position ? ` • ${context.position}` : ""}
         </p>
 
-        <span>
-          {player.nationality || "Unknown nationality"}
-          {context?.league?.name ? ` • ${context.league.name}` : ""}
-        </span>
+        <span>{player.age ? `${player.age} yrs` : "Footballer"}</span>
       </div>
     </Link>
   );
 };
-
 /* It displays:
 
 player photo

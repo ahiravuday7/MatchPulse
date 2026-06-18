@@ -37,10 +37,8 @@ export const API_ROUTES = {
     search: (query, type = "all", limit = 10) =>
       `/football/search?q=${query}&type=${type}&limit=${limit}`,
 
-    playerSearch: ({ query, season, leagueId = 39, limit = 10 }) =>
-      `/football/players/search?q=${encodeQuery(
-        query,
-      )}&season=${season}&league=${leagueId}&limit=${limit}`,
+    playerSearch: ({ query, limit = 20 }) =>
+      `/football/players/search?q=${encodeQuery(query)}&limit=${limit}`,
 
     playerDetails: (playerId, season) =>
       `/football/players/${playerId}?season=${season}`,

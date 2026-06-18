@@ -26,7 +26,14 @@ import {
   playerDetailsValidator,
   teamPlayersValidator,
   leagueSeasonsValidator,
+  syncPlayerIndexValidator,
 } from "../validators/footballValidators.js";
+
+import {
+  syncPlayerIndexController,
+  getPlayerIndexStatusController,
+} from "../controllers/playerIndexController.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 import { searchLimiter } from "../middleware/rateLimiter.js";
 
@@ -41,6 +48,16 @@ router.get(
   validateRequest,
   searchFootballController,
 );
+
+router.get("/players/index/status", getPlayerIndexStatusController);
+router.post(
+  "/players/index/sync",
+  protect,
+  syncPlayerIndexValidator,
+  validateRequest,
+  syncPlayerIndexController,
+);
+
 router.get(
   "/players/search",
   playerSearchValidator,

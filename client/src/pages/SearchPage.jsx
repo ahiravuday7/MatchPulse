@@ -11,8 +11,6 @@ import { TeamSearchCard } from "../components/football/TeamSearchCard";
 import { LeagueSearchCard } from "../components/football/LeagueSearchCard";
 import { PlayerSearchCard } from "../components/football/PlayerSearchCard";
 
-import { createFallbackSeasonOptions } from "../utils/seasonUtils";
-
 const SEARCH_TABS = [
   {
     label: "All",
@@ -32,46 +30,9 @@ const SEARCH_TABS = [
   },
 ];
 
-const PLAYER_LEAGUES = [
-  {
-    id: 39,
-    name: "Premier League",
-  },
-  {
-    id: 140,
-    name: "La Liga",
-  },
-  {
-    id: 78,
-    name: "Bundesliga",
-  },
-  {
-    id: 135,
-    name: "Serie A",
-  },
-  {
-    id: 61,
-    name: "Ligue 1",
-  },
-  {
-    id: 2,
-    name: "Champions League",
-  },
-  {
-    id: 253,
-    name: "MLS",
-  },
-];
-
 export const SearchPage = () => {
   const [query, setQuery] = useState("");
   const [activeTab, setActiveTab] = useState("all");
-  const [season, setSeason] = useState(2025);
-  const [seasonOptions, setSeasonOptions] = useState(
-    createFallbackSeasonOptions({ leagueId: 39 }),
-  );
-  const [seasonLoading, setSeasonLoading] = useState(false);
-  const [leagueId, setLeagueId] = useState(39);
 
   const [teams, setTeams] = useState([]);
   const [leagues, setLeagues] = useState([]);
@@ -87,8 +48,7 @@ export const SearchPage = () => {
   const [error, setError] = useState("");
 
   const trimmedQuery = query.trim();
-
-  const hasMinimumSearchLength = trimmedQuery.length >= 3; //So search starts only when user enters at least 3 characters.
+  const hasMinimumSearchLength = trimmedQuery.length >= 3;
 
   const totalResults = useMemo(() => {
     return teams.length + leagues.length + players.length;
@@ -98,6 +58,7 @@ export const SearchPage = () => {
     setTeams([]);
     setLeagues([]);
     setPlayers([]);
+
     setSources({
       teams: null,
       leagues: null,
@@ -118,9 +79,7 @@ export const SearchPage = () => {
       if (activeTab === "player") {
         const playerResult = await footballService.searchPlayers({
           query: trimmedQuery,
-          season,
-          leagueId,
-          limit: 10,
+          limit: 20,
         });
 
         setPlayers(playerResult.data || []);
@@ -130,6 +89,32 @@ export const SearchPage = () => {
         setSources({
           teams: null,
           leagues: null,
+          players: playerResult.source,
+        });
+
+        return;
+      }
+
+      if (activeTab === "all") {
+        const [footballResult, playerResult] = await Promise.all([
+          footballService.searchFootball({
+            query: trimmedQuery,
+            type: "all",
+            limit: 10,
+          }),
+          footballService.searchPlayers({
+            query: trimmedQuery,
+            limit: 10,
+          }),
+        ]);
+
+        setTeams(footballResult.data?.teams || []);
+        setLeagues(footballResult.data?.leagues || []);
+        setPlayers(playerResult.data || []);
+
+        setSources({
+          teams: footballResult.sources?.teams || null,
+          leagues: footballResult.sources?.leagues || null,
           players: playerResult.source,
         });
 
@@ -168,49 +153,13 @@ export const SearchPage = () => {
     }, 500);
 
     return () => clearTimeout(timeoutId);
-  }, [trimmedQuery, activeTab, season, leagueId]);
+  }, [trimmedQuery, activeTab]);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
     resetResults();
     setError("");
   };
-
-  const fetchLeagueSeasons = async (selectedLeagueId) => {
-    try {
-      setSeasonLoading(true);
-
-      const result = await footballService.getLeagueSeasons(selectedLeagueId);
-
-      const seasons = result.data?.seasons || [];
-
-      if (seasons.length > 0) {
-        setSeasonOptions(seasons);
-        setSeason(seasons[0].value);
-      } else {
-        const fallback = createFallbackSeasonOptions({
-          leagueId: selectedLeagueId,
-        });
-
-        setSeasonOptions(fallback);
-        setSeason(fallback[0].value);
-      }
-    } catch {
-      const fallback = createFallbackSeasonOptions({
-        leagueId: selectedLeagueId,
-      });
-
-      setSeasonOptions(fallback);
-      setSeason(fallback[0].value);
-    } finally {
-      setSeasonLoading(false);
-    }
-  };
-  useEffect(() => {
-    if (activeTab === "player") {
-      fetchLeagueSeasons(leagueId);
-    }
-  }, [activeTab, leagueId]);
 
   return (
     <section className="page">
@@ -232,39 +181,10 @@ export const SearchPage = () => {
           <input
             type="search"
             value={query}
-            placeholder="Search Arsenal, Premier League, Saka..."
+            placeholder="Search Ronaldo, Saka, Arsenal, Premier League..."
             className="search-input"
             onChange={(event) => setQuery(event.target.value)}
           />
-
-          {activeTab === "player" && (
-            <>
-              <select
-                className="season-select"
-                value={season}
-                disabled={seasonLoading}
-                onChange={(event) => setSeason(Number(event.target.value))}
-              >
-                {seasonOptions.map((seasonOption) => (
-                  <option key={seasonOption.value} value={seasonOption.value}>
-                    {seasonOption.label}
-                  </option>
-                ))}
-              </select>
-
-              <select
-                className="season-select"
-                value={leagueId}
-                onChange={(event) => setLeagueId(Number(event.target.value))}
-              >
-                {PLAYER_LEAGUES.map((league) => (
-                  <option key={league.id} value={league.id}>
-                    {league.name}
-                  </option>
-                ))}
-              </select>
-            </>
-          )}
         </div>
 
         <div className="search-tabs">
@@ -302,6 +222,18 @@ export const SearchPage = () => {
 
       {!loading && !error && totalResults > 0 && (
         <div className="search-results">
+          {players.length > 0 && (
+            <section className="search-result-section">
+              <h2>Players</h2>
+
+              <div className="search-card-grid">
+                {players.map((item) => (
+                  <PlayerSearchCard key={item.player.id} item={item} />
+                ))}
+              </div>
+            </section>
+          )}
+
           {teams.length > 0 && (
             <section className="search-result-section">
               <h2>Teams</h2>
@@ -321,23 +253,6 @@ export const SearchPage = () => {
               <div className="search-card-grid">
                 {leagues.map((league) => (
                   <LeagueSearchCard key={league.id} league={league} />
-                ))}
-              </div>
-            </section>
-          )}
-
-          {players.length > 0 && (
-            <section className="search-result-section">
-              <h2>Players</h2>
-
-              <div className="search-card-grid">
-                {players.map((item) => (
-                  <PlayerSearchCard
-                    key={item.player.id}
-                    item={item}
-                    season={season}
-                    leagueId={leagueId}
-                  />
                 ))}
               </div>
             </section>

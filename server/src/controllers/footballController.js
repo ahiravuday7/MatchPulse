@@ -164,12 +164,10 @@ export const getTeamSquadController = asyncHandler(async (req, res) => {
 
 // player
 export const searchPlayersController = asyncHandler(async (req, res) => {
-  const { q, season = 2024, league, limit = 10 } = req.query;
+  const { q, limit = 20 } = req.query;
 
   const result = await searchPlayers({
     query: q,
-    season: Number(season),
-    leagueId: league ? Number(league) : null,
     limit: Number(limit),
   });
 
@@ -177,8 +175,6 @@ export const searchPlayersController = asyncHandler(async (req, res) => {
     success: true,
     source: result.source,
     query: result.query,
-    season: result.season,
-    leagueId: result.leagueId,
     count: result.count,
     data: result.data,
   });

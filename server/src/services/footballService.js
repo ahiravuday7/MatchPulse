@@ -40,6 +40,7 @@ import {
   formatSeasonOptions,
   formatLeagueSeasons,
 } from "../utils/seasonFormatter.js";
+import { searchPlayerIndex } from "./playerIndexService.js";
 
 //This function is called by the controller.
 export const getLiveMatches = async () => {
@@ -241,36 +242,11 @@ export const getTeamSquad = async (teamId) => {
 };
 
 // players
-export const searchPlayers = async ({
-  query,
-  season,
-  leagueId,
-  limit = 10,
-}) => {
-  const searchTerm = query.trim();
-
-  const result = await getOrSetCache({
-    key: cacheKeys.searchPlayers(searchTerm, season, leagueId || "all"),
-    type: "PLAYER_SEARCH",
-    ttlSeconds: CACHE_DURATIONS.PLAYER_SEARCH,
-    fetchFreshData: () =>
-      searchPlayersFromApi({
-        query: searchTerm,
-        season,
-        leagueId,
-      }),
+export const searchPlayers = async ({ query, limit = 20 }) => {
+  return searchPlayerIndex({
+    query,
+    limit,
   });
-
-  const players = formatPlayerSearchResults(result.data, limit);
-
-  return {
-    source: result.source,
-    query: searchTerm,
-    season,
-    leagueId: leagueId || null,
-    count: players.length,
-    data: players,
-  };
 };
 
 export const getPlayerDetails = async ({ playerId, season }) => {

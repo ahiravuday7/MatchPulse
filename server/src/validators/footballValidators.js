@@ -1,4 +1,16 @@
-import { param, query } from "express-validator";
+import { body, param, query } from "express-validator";
+
+export const syncPlayerIndexValidator = [
+  body("teamIds")
+    .optional()
+    .isArray({ max: 30 })
+    .withMessage("teamIds must be an array with maximum 30 team IDs"),
+
+  body("teamIds.*")
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage("Each team ID must be a valid number"),
+];
 
 export const matchIdValidator = [
   param("matchId").isInt({ min: 1 }).withMessage("Invalid match ID"),
@@ -60,17 +72,10 @@ export const playerSearchValidator = [
     .isLength({ min: 3, max: 50 })
     .withMessage("Player search query must be between 3 and 50 characters"),
 
-  query("season")
-    .optional()
-    .isInt({ min: 2000, max: 2100 })
-    .withMessage("Invalid season"),
-
-  query("league").optional().isInt({ min: 1 }).withMessage("Invalid league ID"),
-
   query("limit")
     .optional()
-    .isInt({ min: 1, max: 20 })
-    .withMessage("Limit must be between 1 and 20")
+    .isInt({ min: 1, max: 50 })
+    .withMessage("Limit must be between 1 and 50")
     .toInt(),
 ];
 

@@ -95,17 +95,10 @@ export const footballService = {
     return response.data;
   },
 
-  searchPlayers: async ({
-    query,
-    season = 2024,
-    leagueId = 39,
-    limit = 10,
-  }) => {
+  searchPlayers: async ({ query, limit = 20 }) => {
     const response = await apiClient.get(
       API_ROUTES.football.playerSearch({
         query,
-        season,
-        leagueId,
         limit,
       }),
     );
