@@ -56,7 +56,6 @@ export const API_ROUTES = {
   favorites: {
     list: "/favorites",
     add: "/favorites",
-    sync: "/favorites/sync",
     remove: (favoriteId) => `/favorites/${favoriteId}`,
   },
 

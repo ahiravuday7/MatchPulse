@@ -31,35 +31,3 @@ export const deleteFavorite = async (favoriteId, userId) => {
     user: userId,
   });
 };
-
-// sync favorite
-export const syncUserFavorites = async ({ userId, favorites = [] }) => {
-  const operations = favorites.map((favorite) => ({
-    updateOne: {
-      filter: {
-        user: userId,
-        type: favorite.type,
-        externalId: favorite.externalId,
-      },
-      update: {
-        $set: {
-          user: userId,
-          type: favorite.type,
-          externalId: favorite.externalId,
-          name: favorite.name,
-          logo: favorite.logo || "",
-          country: favorite.country || "",
-          meta: favorite.meta || {},
-        },
-      },
-      upsert: true,
-    },
-  }));
-  if (operations.length > 0) {
-    await Favorite.bulkWrite(operations);
-  }
-
-  return Favorite.find({
-    user: userId,
-  }).sort({ createdAt: -1 });
-};

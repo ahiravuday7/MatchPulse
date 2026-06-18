@@ -2,7 +2,6 @@ import {
   createFavorite,
   getFavorites,
   deleteFavorite,
-  syncUserFavorites,
 } from "../services/favoriteService.js";
 
 import { asyncHandler } from "../middleware/asyncHandler.js";
@@ -45,19 +44,5 @@ export const deleteFavoriteController = asyncHandler(async (req, res) => {
   res.status(200).json({
     success: true,
     message: "Favorite removed",
-  });
-});
-
-export const syncFavoritesController = asyncHandler(async (req, res) => {
-  const favorites = await syncUserFavorites({
-    userId: req.user._id,
-    favorites: req.body.favorites,
-  });
-
-  res.status(200).json({
-    success: true,
-    message: "Favorites synced successfully",
-    count: favorites.length,
-    data: favorites,
   });
 });
