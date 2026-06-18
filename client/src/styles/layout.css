@@ -1,41 +1,50 @@
-/* layout.css    → navbar, app shell, main layout */
+/* layout.css → navbar, app shell, main layout */
+
 .app-shell {
   min-height: 100vh;
 }
 
 .navbar {
-  height: 64px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  min-height: 64px;
   padding: 0 32px;
-  border-bottom: 1px solid #1e293b;
-  background: #020617;
+
   display: flex;
   align-items: center;
   gap: 32px;
+
+  border-bottom: 1px solid #1e293b;
+  background: rgba(2, 6, 23, 0.92);
+  backdrop-filter: blur(14px);
 }
 
 .brand {
   font-size: 22px;
   font-weight: 800;
   color: #22c55e;
+  white-space: nowrap;
 }
 
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex: 1;
-}
-
+.nav-links,
 .auth-links {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.nav-links {
+  flex: 1;
 }
 
 .nav-link {
   font-size: 14px;
   color: #94a3b8;
   transition: color 0.2s ease;
+  white-space: nowrap;
 }
 
 .nav-link:hover {
@@ -52,6 +61,19 @@
   background: #22c55e;
   color: #020617;
   font-weight: 700;
+  white-space: nowrap;
+}
+
+.primary-link.active,
+.primary-link:hover {
+  background: #22c55e;
+  color: #020617;
+}
+
+.logout-button {
+  border: none;
+  cursor: pointer;
+  font: inherit;
 }
 
 .main-content {
@@ -60,59 +82,12 @@
   padding: 32px 24px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .navbar {
     height: auto;
     padding: 16px;
     align-items: flex-start;
     flex-direction: column;
-  }
-
-  .nav-links,
-  .auth-links {
-    flex-wrap: wrap;
-  } 
-}
-.logout-button {
-  border: none;
-  cursor: pointer;
-  font: inherit;
-}
-
-/* This makes the navbar stay at the top while scrolling. */
-.navbar {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  backdrop-filter: blur(14px);
-}
-
-/* This allows navbar links to wrap properly instead of breaking the layout. */
-.nav-links,
-.auth-links {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-/* It keeps navbar items on one line. */
-.nav-link,
-.brand,
-.primary-link {
-  white-space: nowrap;
-}
-
-.logout-button {
-  border: none;
-  cursor: pointer;
-  font: inherit;
-}
-
-/* Mobile navbar behavior */
-@media (max-width: 1000px) {
-  .navbar {
-    align-items: flex-start;
     gap: 14px;
   }
 
@@ -148,5 +123,9 @@
 
   .brand {
     font-size: 22px;
+  }
+
+  .main-content {
+    padding: 24px 14px;
   }
 }

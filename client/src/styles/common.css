@@ -11,6 +11,33 @@
   cursor: pointer;
 }
 
+/* Login/Register/Profile/Favorites pages */
+.primary-button,
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.primary-button {
+  background: #22c55e;
+  color: #052e16;
+  border-color: #22c55e;
+}
+
+.secondary-button {
+  background: transparent;
+  border-color: #334155;
+  color: #e5e7eb;
+}
+
 .secondary-button {
   margin-top: 0;
   background: transparent;
@@ -124,29 +151,3 @@
   line-height: 1.6;
 }
 
-/* Login/Register/Profile/Favorites pages */
-.primary-button,
-.secondary-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  border-radius: 999px;
-  padding: 10px 16px;
-  font-weight: 800;
-  text-decoration: none;
-  cursor: pointer;
-  border: 1px solid transparent;
-}
-
-.primary-button {
-  background: #22c55e;
-  color: #052e16;
-  border-color: #22c55e;
-}
-
-.secondary-button {
-  background: transparent;
-  border-color: #334155;
-  color: #e5e7eb;
-}
