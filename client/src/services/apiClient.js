@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import { STORAGE_KEYS } from "../utils/storageKeys";
 
 export const apiClient = axios.create({
@@ -19,6 +20,25 @@ apiClient.interceptors.request.use((config) => {
 
   return config;
 });
+
+// If token expires or becomes invalid:
+// Backend returns 401,Frontend clears token,Navbar changes to Login/Register,Protected routes redirect correctly
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const status = error.response?.status;
+
+    if (status === 401) {
+      localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
+      localStorage.removeItem(STORAGE_KEYS.AUTH_USER);
+
+      window.dispatchEvent(new Event("auth-change"));
+      window.dispatchEvent(new Event("auth-expired"));
+    }
+
+    return Promise.reject(error);
+  },
+);
 
 // Frontend calls only your backend.
 // Frontend does not call API-Football directly.

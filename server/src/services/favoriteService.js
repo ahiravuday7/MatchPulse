@@ -4,15 +4,30 @@ import Favorite from "../models/Favorite.js";
 export const createFavorite = async (userId, favoriteData) => {
   const { type, externalId, name, logo, country, meta } = favoriteData;
 
-  const favorite = await Favorite.create({
-    user: userId,
-    type,
-    externalId,
-    name,
-    logo: logo || "",
-    country: country || "",
-    meta: meta || {},
-  });
+  const favorite = await Favorite.findOneAndUpdate(
+    {
+      user: userId,
+      type,
+      externalId,
+    },
+    {
+      $setOnInsert: {
+        user: userId,
+        type,
+        externalId,
+        name,
+        logo: logo || "",
+        country: country || "",
+        meta: meta || {},
+      },
+    },
+    {
+      new: true,
+      upsert: true,
+      runValidators: true,
+      setDefaultsOnInsert: true,
+    },
+  );
 
   return favorite;
 };

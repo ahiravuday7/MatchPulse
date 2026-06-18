@@ -18,6 +18,7 @@ import { RegisterPage } from "../pages/RegisterPage";
 import { ProfilePage } from "../pages/ProfilePage";
 import { NotFoundPage } from "../pages/NotFoundPage";
 import { SearchPage } from "../pages/SearchPage";
+import { ProtectedRoute } from "../components/auth/ProtectedRoute";
 
 export const AppRoutes = () => {
   return (
@@ -44,11 +45,25 @@ export const AppRoutes = () => {
         <Route path="/search/players" element={<SearchPage />} />
         <Route path="/players/:playerId" element={<PlayerDetailsPage />} />
 
-        <Route path="/favorites" element={<FavoritesPage />} />
+        <Route
+          path="/favorites"
+          element={
+            <ProtectedRoute>
+              <FavoritesPage />
+            </ProtectedRoute>
+          }
+        />
 
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
 
         <Route path="*" element={<NotFoundPage />} />
       </Route>

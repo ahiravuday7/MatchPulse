@@ -1,20 +1,49 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 import { favoriteService } from "../../services/favoriteService";
 import { STORAGE_KEYS } from "../../utils/storageKeys";
 
+const getAuthUserId = () => {
+  const user = localStorage.getItem(STORAGE_KEYS.AUTH_USER);
+
+  if (!user) {
+    return "";
+  }
+
+  try {
+    return JSON.parse(user)?.id || "";
+  } catch {
+    return "";
+  }
+};
+
 export const FavoriteButton = ({ favorite }) => {
+  const location = useLocation();
+
   const [savedFavoriteId, setSavedFavoriteId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(false);
   const [error, setError] = useState("");
+  const [authVersion, setAuthVersion] = useState(0);
 
   const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
   const isLoggedIn = Boolean(token);
+  const authUserId = getAuthUserId();
+
+  const favoriteKey = useMemo(() => {
+    if (!favorite?.type || !favorite?.externalId) {
+      return "";
+    }
+
+    return `${favorite.type}-${favorite.externalId}`;
+  }, [favorite?.type, favorite?.externalId]);
 
   const checkFavoriteStatus = async () => {
+    setError("");
+
     if (!isLoggedIn || !favorite?.externalId || !favorite?.type) {
+      setSavedFavoriteId(null);
       return;
     }
 
@@ -52,7 +81,9 @@ export const FavoriteButton = ({ favorite }) => {
       } else {
         const savedFavorite = await favoriteService.addFavorite(favorite);
 
-        setSavedFavoriteId(savedFavorite?._id || savedFavorite?.id || true);
+        setSavedFavoriteId(savedFavorite?._id || savedFavorite?.id || null);
+
+        await checkFavoriteStatus();
       }
     } catch (error) {
       setError(
@@ -66,12 +97,34 @@ export const FavoriteButton = ({ favorite }) => {
   };
 
   useEffect(() => {
+    const handleAuthChange = () => {
+      setAuthVersion((value) => value + 1);
+      setSavedFavoriteId(null);
+      setError("");
+    };
+
+    window.addEventListener("auth-change", handleAuthChange);
+    window.addEventListener("storage", handleAuthChange);
+
+    return () => {
+      window.removeEventListener("auth-change", handleAuthChange);
+      window.removeEventListener("storage", handleAuthChange);
+    };
+  }, []);
+
+  useEffect(() => {
     checkFavoriteStatus();
-  }, [favorite?.type, favorite?.externalId]);
+  }, [favoriteKey, authUserId, authVersion]);
 
   if (!isLoggedIn) {
     return (
-      <Link to="/login" className="favorite-login-link">
+      <Link
+        to="/login"
+        state={{
+          from: location.pathname,
+        }}
+        className="favorite-login-link"
+      >
         Login to save
       </Link>
     );
