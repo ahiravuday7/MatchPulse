@@ -24,7 +24,8 @@ export const cacheKeys = {
   searchPlayers: (query, season, leagueId = "all") =>
     `search-players-${normalizeSearchQuery(query)}-${season}-${leagueId}`,
 
-  playerDetails: (playerId, season) => `player-details-${playerId}-${season}`,
+  playerDetails: (playerId, season, leagueId = "all") =>
+    `player-details-${playerId}-${season}-${leagueId}`,
 
   teamPlayers: (teamId, season) => `team-players-${teamId}-${season}`,
 

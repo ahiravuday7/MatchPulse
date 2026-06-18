@@ -2,6 +2,30 @@ const getPrimaryStatistic = (statistics = []) => {
   return statistics?.[0] || null;
 };
 
+const getNumber = (value) => {
+  const numberValue = Number(value);
+
+  if (Number.isNaN(numberValue)) {
+    return 0;
+  }
+
+  return numberValue;
+};
+
+const getAverageRating = (statistics = []) => {
+  const ratings = statistics
+    .map((statistic) => Number(statistic.games?.rating))
+    .filter((rating) => !Number.isNaN(rating));
+
+  if (!ratings.length) {
+    return null;
+  }
+
+  const total = ratings.reduce((sum, rating) => sum + rating, 0);
+
+  return (total / ratings.length).toFixed(2);
+};
+
 const formatPlayerProfile = (player) => ({
   id: player.id,
   name: player.name,
@@ -53,6 +77,53 @@ const formatStatistic = (statistic) => {
   };
 };
 
+const createPlayerSummary = (statistics = []) => {
+  const primaryStatistic = getPrimaryStatistic(statistics);
+
+  return {
+    team: primaryStatistic?.team || null,
+    league: primaryStatistic?.league || null,
+    position: primaryStatistic?.games?.position || null,
+
+    appearances: statistics.reduce(
+      (sum, statistic) => sum + getNumber(statistic.games?.appearences),
+      0,
+    ),
+
+    starts: statistics.reduce(
+      (sum, statistic) => sum + getNumber(statistic.games?.lineups),
+      0,
+    ),
+
+    minutes: statistics.reduce(
+      (sum, statistic) => sum + getNumber(statistic.games?.minutes),
+      0,
+    ),
+
+    goals: statistics.reduce(
+      (sum, statistic) => sum + getNumber(statistic.goals?.total),
+      0,
+    ),
+
+    assists: statistics.reduce(
+      (sum, statistic) => sum + getNumber(statistic.goals?.assists),
+      0,
+    ),
+
+    yellowCards: statistics.reduce(
+      (sum, statistic) => sum + getNumber(statistic.cards?.yellow),
+      0,
+    ),
+
+    redCards: statistics.reduce(
+      (sum, statistic) => sum + getNumber(statistic.cards?.red),
+      0,
+    ),
+
+    rating: getAverageRating(statistics),
+  };
+};
+
 export const formatPlayerSearchResults = (apiResponse, limit = 10) => {
   const results = apiResponse?.response || [];
 
@@ -93,12 +164,16 @@ export const formatPlayerSearchResults = (apiResponse, limit = 10) => {
 export const formatPlayerDetails = (apiResponse) => {
   const item = apiResponse?.response?.[0];
 
-  if (!item) return null;
+  if (!item) {
+    return null;
+  }
+
+  const statistics = (item.statistics || []).map(formatStatistic);
 
   return {
     player: formatPlayerProfile(item.player),
-
-    statistics: (item.statistics || []).map(formatStatistic),
+    summary: createPlayerSummary(statistics),
+    statistics,
   };
 };
 
@@ -110,11 +185,9 @@ export const formatTeamPlayers = (apiResponse, limit = 50) => {
 
     return {
       player: formatPlayerProfile(item.player),
-
       position: primaryStatistic?.games?.position || null,
       number: primaryStatistic?.games?.number || null,
       rating: primaryStatistic?.games?.rating || null,
-
       statistics: primaryStatistic ? formatStatistic(primaryStatistic) : null,
     };
   });

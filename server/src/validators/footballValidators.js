@@ -86,6 +86,8 @@ export const playerDetailsValidator = [
     .optional()
     .isInt({ min: 2000, max: 2100 })
     .withMessage("Invalid season"),
+
+  query("league").optional().isInt({ min: 1 }).withMessage("Invalid league ID"),
 ];
 
 export const teamPlayersValidator = [

@@ -40,8 +40,17 @@ export const API_ROUTES = {
     playerSearch: ({ query, limit = 20 }) =>
       `/football/players/search?q=${encodeQuery(query)}&limit=${limit}`,
 
-    playerDetails: (playerId, season) =>
-      `/football/players/${playerId}?season=${season}`,
+    playerDetails: (playerId, season, leagueId) => {
+      const params = new URLSearchParams({
+        season: String(season),
+      });
+
+      if (leagueId) {
+        params.set("league", String(leagueId));
+      }
+
+      return `/football/players/${playerId}?${params.toString()}`;
+    },
   },
 
   favorites: {

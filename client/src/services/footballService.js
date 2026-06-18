@@ -106,14 +106,16 @@ export const footballService = {
     return response.data;
   },
 
-  getPlayerDetails: async ({ playerId, season = 2024 }) => {
+  getPlayerDetails: async ({ playerId, season = 2024, leagueId = "" }) => {
     const response = await apiClient.get(
-      API_ROUTES.football.playerDetails(playerId, season),
+      API_ROUTES.football.playerDetails(playerId, season, leagueId),
     );
 
     return {
       source: response.data.source,
+      playerId: response.data.playerId,
       season: response.data.season,
+      leagueId: response.data.leagueId,
       data: response.data.data,
     };
   },

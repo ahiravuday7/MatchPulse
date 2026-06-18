@@ -234,13 +234,23 @@ export const searchPlayersFromApi = async ({ query, season, leagueId }) => {
   });
 };
 
-export const getPlayerDetailsFromApi = async ({ playerId, season }) => {
+export const getPlayerDetailsFromApi = async ({
+  playerId,
+  season,
+  leagueId,
+}) => {
+  const params = {
+    id: playerId,
+    season,
+  };
+
+  if (leagueId) {
+    params.league = leagueId;
+  }
+
   return requestApiFootball({
     url: "/players",
-    params: {
-      id: playerId,
-      season,
-    },
+    params,
     usageKey: "player_details",
   });
 };

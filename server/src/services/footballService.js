@@ -249,22 +249,27 @@ export const searchPlayers = async ({ query, limit = 20 }) => {
   });
 };
 
-export const getPlayerDetails = async ({ playerId, season }) => {
+export const getPlayerDetails = async ({ playerId, season, leagueId }) => {
   const result = await getOrSetCache({
-    key: cacheKeys.playerDetails(playerId, season),
+    key: cacheKeys.playerDetails(playerId, season, leagueId || "all"),
     type: "PLAYER_DETAILS",
     ttlSeconds: CACHE_DURATIONS.PLAYER_DETAILS,
     fetchFreshData: () =>
       getPlayerDetailsFromApi({
         playerId,
         season,
+        leagueId,
       }),
   });
 
+  const playerDetails = formatPlayerDetails(result.data);
+
   return {
     source: result.source,
+    playerId,
     season,
-    data: formatPlayerDetails(result.data),
+    leagueId: leagueId || null,
+    data: playerDetails,
   };
 };
 

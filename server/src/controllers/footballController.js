@@ -182,27 +182,20 @@ export const searchPlayersController = asyncHandler(async (req, res) => {
 
 export const getPlayerDetailsController = asyncHandler(async (req, res) => {
   const { playerId } = req.params;
-  const season = Number(req.query.season) || 2024;
+  const { season = 2024, league } = req.query;
 
   const result = await getPlayerDetails({
-    playerId,
-    season,
+    playerId: Number(playerId),
+    season: Number(season),
+    leagueId: league ? Number(league) : null,
   });
-
-  if (!result.data) {
-    return res.status(200).json({
-      success: true,
-      source: result.source,
-      season,
-      message: "No player data available for this player and season",
-      data: null,
-    });
-  }
 
   res.status(200).json({
     success: true,
     source: result.source,
+    playerId: result.playerId,
     season: result.season,
+    leagueId: result.leagueId,
     data: result.data,
   });
 });
