@@ -21,8 +21,9 @@ const router = express.Router();
 
 router.post("/register", registerValidator, validateRequest, registerUser);
 router.post("/login", loginValidator, validateRequest, loginUser);
-router.get("/me", protect, getMe);
 router.post("/logout", protect, logoutUser);
+
+router.get("/me", protect, getMe);
 router.patch(
   "/profile",
   protect,

@@ -1,0 +1,80 @@
+.profile-layout {
+  display: grid;
+  gap: 24px;
+  max-width: 720px;
+}
+
+.profile-card {
+  background: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 18px;
+  padding: 22px;
+}
+
+.profile-card h2 {
+  margin-bottom: 16px;
+}
+
+.profile-form {
+  display: grid;
+  gap: 16px;
+}
+
+.profile-form label,
+.delete-confirm-label {
+  display: grid;
+  gap: 8px;
+  color: #d1d5db;
+  font-weight: 600;
+}
+
+.profile-form input,
+.delete-confirm-label input {
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid #374151;
+  background: #020617;
+  color: #f9fafb;
+  padding: 0 14px;
+  outline: none;
+}
+
+.profile-form input:focus,
+.delete-confirm-label input:focus {
+  border-color: #22c55e;
+}
+
+.profile-success {
+  background: #064e3b;
+  color: #bbf7d0;
+  border: 1px solid #047857;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.danger-card {
+  border-color: #7f1d1d;
+}
+
+.danger-card p {
+  color: #fca5a5;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.danger-button {
+  border: none;
+  border-radius: 999px;
+  padding: 11px 18px;
+  background: #dc2626;
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+  margin-top: 16px;
+}
+
+.danger-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

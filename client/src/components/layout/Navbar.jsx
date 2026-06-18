@@ -79,13 +79,19 @@ export const Navbar = () => {
 
       <div className="auth-links">
         {isLoggedIn ? (
-          <button
-            type="button"
-            className="nav-link primary-link logout-button"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
+          <>
+            <NavLink to="/profile" className="nav-link">
+              Profile
+            </NavLink>
+
+            <button
+              type="button"
+              className="nav-link primary-link logout-button"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          </>
         ) : (
           <>
             <NavLink to="/login" className="nav-link">
