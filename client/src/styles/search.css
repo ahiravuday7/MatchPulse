@@ -165,3 +165,69 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* This means the search input/filter area can stay visible while scrolling. */
+.search-panel {
+  position: sticky;
+  top: 86px;
+  z-index: 20;
+  backdrop-filter: blur(12px);
+}
+
+.search-card {
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+/* When the user hovers over a search result card, it moves slightly and highlights. */
+.search-card:hover {
+  transform: translateY(-2px);
+  border-color: #22c55e;
+  background: #0f172a;
+}
+
+.search-card-content h3 {
+  line-height: 1.3;
+}
+
+.search-card-content p,
+.search-card-content span {
+  line-height: 1.5;
+}
+
+/* On smaller screens, search cards become one column. */
+@media (max-width: 900px) {
+  .search-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .search-panel {
+    position: static;
+  }
+}
+
+/* On mobile, search input and buttons stack vertically. */
+@media (max-width: 600px) {
+  .search-input-row {
+    flex-direction: column;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+
+  .search-tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+  }
+
+  .search-tab {
+    white-space: nowrap;
+  }
+
+  .search-card {
+    align-items: flex-start;
+  }
+}

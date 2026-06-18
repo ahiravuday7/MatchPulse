@@ -71,11 +71,82 @@
   .nav-links,
   .auth-links {
     flex-wrap: wrap;
-  }
-
-  .logout-button {
+  } 
+}
+.logout-button {
   border: none;
   cursor: pointer;
   font: inherit;
 }
+
+/* This makes the navbar stay at the top while scrolling. */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(14px);
+}
+
+/* This allows navbar links to wrap properly instead of breaking the layout. */
+.nav-links,
+.auth-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* It keeps navbar items on one line. */
+.nav-link,
+.brand,
+.primary-link {
+  white-space: nowrap;
+}
+
+.logout-button {
+  border: none;
+  cursor: pointer;
+  font: inherit;
+}
+
+/* Mobile navbar behavior */
+@media (max-width: 1000px) {
+  .navbar {
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .brand {
+    width: 100%;
+  }
+
+  .nav-links {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .auth-links {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    padding: 14px;
+  }
+
+  .nav-links {
+    gap: 8px;
+  }
+
+  .nav-link {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+
+  .brand {
+    font-size: 22px;
+  }
 }

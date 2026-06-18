@@ -14,3 +14,29 @@ a {
   color: inherit;
   text-decoration: none;
 }
+/* This makes scrolling smooth when navigating to sections. */
+html {
+  scroll-behavior: smooth;
+}
+/* Custom scrollbar. This improves the scrollbar design in Chrome/Edge/Safari.It gives the app a more polished dark theme feel. */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+/* Responsive image rule */
+img {
+  max-width: 100%;
+}

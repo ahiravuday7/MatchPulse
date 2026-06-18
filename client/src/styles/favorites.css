@@ -149,3 +149,57 @@
     flex-direction: column;
   }
 }
+
+.favorite-card {
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+/* Favorite cards now feel clickable and interactive. */
+.favorite-card:hover {
+  transform: translateY(-2px);
+  border-color: #22c55e;
+  background: #0f172a;
+}
+
+.favorite-card-main {
+  flex: 1;
+}
+
+.favorite-card h3 {
+  line-height: 1.3;
+}
+
+.favorite-remove-button {
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease;
+}
+/* This adds a small hover animation to the remove button. */
+.favorite-remove-button:hover {
+  transform: translateY(-1px);
+}
+
+.favorite-action {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+/* Mobile favorites behavior */
+@media (max-width: 600px) {
+  .favorite-button,
+  .favorite-login-link,
+  .favorite-remove-button {
+    width: 100%;
+  }
+
+  .favorite-action {
+    width: 100%;
+  }
+
+  .favorite-card-main {
+    width: 100%;
+  }
+}

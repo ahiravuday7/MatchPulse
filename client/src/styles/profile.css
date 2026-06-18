@@ -78,3 +78,33 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+/* This ensures the profile layout does not shrink unexpectedly. */
+.profile-layout {
+  width: 100%;
+}
+
+/* Profile card shadow */
+.profile-card {
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+}
+/* Full-width inputs */
+.profile-form input,
+.delete-confirm-label input {
+  width: 100%;
+}
+
+.profile-form button {
+  justify-self: flex-start;
+}
+/* Mobile profile buttons */
+@media (max-width: 600px) {
+  .profile-form button,
+  .danger-button {
+    width: 100%;
+  }
+
+  .profile-card {
+    padding: 18px;
+  }
+}

@@ -75,3 +75,78 @@
     transform: rotate(360deg);
   }
 }
+
+/* This gives buttons a smooth animation. */
+.primary-button,
+.secondary-button,
+.danger-button {
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease,
+    background 0.15s ease;
+}
+
+/* The button moves slightly upward. */
+.primary-button:hover,
+.secondary-button:hover,
+.danger-button:hover {
+  transform: translateY(-1px);
+}
+
+/* This is useful for login/register/profile forms. Disabled button behavior */
+.primary-button:disabled,
+.secondary-button:disabled,
+.danger-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Loading/error/empty states */
+.loading-state,
+.error-state,
+.empty-state {
+  background: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 18px;
+  padding: 24px;
+  margin-top: 18px;
+}
+
+.error-state {
+  border-color: #7f1d1d;
+}
+
+.empty-state p,
+.error-state p,
+.loading-state p {
+  color: #9ca3af;
+  line-height: 1.6;
+}
+
+/* Login/Register/Profile/Favorites pages */
+.primary-button,
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.primary-button {
+  background: #22c55e;
+  color: #052e16;
+  border-color: #22c55e;
+}
+
+.secondary-button {
+  background: transparent;
+  border-color: #334155;
+  color: #e5e7eb;
+}
