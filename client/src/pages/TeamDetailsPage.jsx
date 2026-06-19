@@ -110,6 +110,17 @@ export const TeamDetailsPage = () => {
             <option value="2021">2021</option>
           </select>
 
+          <Link to={`/teams/${teamId}/squad`} className="secondary-button">
+            View Squad
+          </Link>
+
+          <Link
+            to={`/teams/${teamId}/players?season=${season}`}
+            className="secondary-button"
+          >
+            View Players
+          </Link>
+
           {teamFavorite && <FavoriteButton favorite={teamFavorite} />}
         </div>
       </div>

@@ -66,27 +66,6 @@ export const footballService = {
     };
   },
 
-  getTeamSquad: async (teamId) => {
-    const response = await apiClient.get(API_ROUTES.football.teamSquad(teamId));
-
-    return {
-      source: response.data.source,
-      data: response.data.data,
-    };
-  },
-
-  getTeamPlayers: async ({ teamId, season = 2024, limit = 50 }) => {
-    const response = await apiClient.get(
-      API_ROUTES.football.teamPlayers(teamId, season, limit),
-    );
-
-    return {
-      source: response.data.source,
-      season: response.data.season,
-      data: response.data.data,
-    };
-  },
-
   searchFootball: async ({ query, type = "all", limit = 10 }) => {
     const response = await apiClient.get(
       API_ROUTES.football.search(query, type, limit),
@@ -132,6 +111,27 @@ export const footballService = {
     );
 
     return response.data;
+  },
+
+  getTeamSquad: async (teamId) => {
+    const response = await apiClient.get(API_ROUTES.football.teamSquad(teamId));
+
+    return {
+      source: response.data.source,
+      data: response.data.data,
+    };
+  },
+
+  getTeamPlayers: async ({ teamId, season = 2024, limit = 50 }) => {
+    const response = await apiClient.get(
+      API_ROUTES.football.teamPlayers(teamId, season, limit),
+    );
+
+    return {
+      source: response.data.source,
+      season: response.data.season,
+      data: response.data.data,
+    };
   },
 };
 

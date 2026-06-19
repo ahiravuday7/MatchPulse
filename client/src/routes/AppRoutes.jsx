@@ -37,9 +37,9 @@ export const AppRoutes = () => {
           element={<LeagueStandingsPage />}
         />
 
-        <Route path="/teams/:teamId" element={<TeamDetailsPage />} />
         <Route path="/teams/:teamId/squad" element={<TeamSquadPage />} />
         <Route path="/teams/:teamId/players" element={<TeamPlayersPage />} />
+        <Route path="/teams/:teamId" element={<TeamDetailsPage />} />
 
         <Route path="/search" element={<SearchPage />} />
         <Route path="/search/players" element={<SearchPage />} />
