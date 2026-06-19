@@ -203,3 +203,13 @@
     width: 100%;
   }
 }
+
+/* Favorite button inside page header. */
+.page-actions .favorite-action {
+  margin-top: 0;
+}
+
+.page-actions .favorite-button,
+.page-actions .favorite-login-link {
+  white-space: nowrap;
+}
